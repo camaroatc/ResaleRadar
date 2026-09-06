@@ -1,0 +1,16 @@
+rules_version = '2';
+
+// Inventory documents are written exclusively by Cloud Functions (Admin SDK),
+// so all financial fields are calculated server-side. Clients read only.
+service cloud.firestore {
+  match /databases/{database}/documents {
+    match /inventoryItems/{itemId} {
+      allow read: if true;
+      allow write: if false;
+    }
+
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}
